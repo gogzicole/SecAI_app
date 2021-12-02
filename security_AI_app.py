@@ -41,6 +41,7 @@ pipeline = Pipeline([('BOW', bow),('LDA', model)])
 
 topic_model = TopicModel(pipeline)
 
+
 try:
     prediction = topic_model.predict(input_df.Url.loc[0],'Ner_Model')
 
