@@ -1,6 +1,7 @@
+spacy download en_core_web_sm
+
 class TopicModel():
     
-    spacy download en_core_web_sm
 
     def __init__(self,model):
         self.model = model
