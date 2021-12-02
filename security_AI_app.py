@@ -40,9 +40,6 @@ model = mlflow.sklearn.load_model('LDA_model')
 pipeline = Pipeline([('BOW', bow),('LDA', model)])
 
 topic_model = TopicModel(pipeline)
-#####################
-text_corpus = topic_model._extractNewsContent(input_df.Url.iloc[0])
-st.write(text_corpus)
 
 try:
     prediction = topic_model.predict(input_df.Url.loc[0],'Ner_Model')
