@@ -31,8 +31,8 @@ except Exception:
 
 st.subheader('Event Url')
 
-# if uploaded_file is not None:
-#     st.write(input_df)
+if uploaded_file is not None:
+    st.write(input_df)
 
 
 bow = pickle.load(open('BOW.sav','rb'))
