@@ -1,4 +1,6 @@
 class TopicModel():
+    
+    spacy download en_core_web_sm
 
     def __init__(self,model):
         self.model = model
@@ -48,7 +50,7 @@ class TopicModel():
     def _special_lemmatizer(self, text):
         import spacy
         allowed_postags=['ADJ','VERB','NOUN','ADV']
-        nlp = spacy.load('en')
+        nlp = spacy.load('en_core_web_sm')
         token = [word for word in nlp(text) if word.pos_ in allowed_postags]
         token1 = [word.lemma_ for word in token]
         token2 = [word for word in token1]
