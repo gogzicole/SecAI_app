@@ -6,9 +6,7 @@ import pickle
 from security_AI import TopicModel
 from sklearn.pipeline import Pipeline
 import mlflow
-from models.model_builder import ExtSummarizer
-from ext_sum import summarize
-#import torch
+
 
 
 st.write(""" 
@@ -19,55 +17,47 @@ This app is used to show a **security event** occurence and **date of occurence*
 """)
 
 
-st.subheader('Input News Url Here')
-url = st.text_input("")
+st.sidebar.header('News Url')
 
+uploaded_file = st.sidebar.file_uploader("Upload your input Security Event news Url", type = ['csv'])
 try:
-    if url is not None:
-        st.markdown(f"[*Read Original News*]({url})")
+    if uploaded_file is not None:
+        input_df = pd.read_csv(uploaded_file)
     else:
-        st.write('Please input Urls Here')
+        st.write('Please Upload a csv file of Urls')
 except Exception:
-    st.write('No Url Uploaded')
+    st.write('Upload a CSV file')
+
+
+st.subheader('Event Url')
+
+if uploaded_file is not None:
+    st.write(input_df)
+
 
 bow = pickle.load(open('BOW.sav','rb'))
 model = mlflow.sklearn.load_model('LDA_model')
 pipeline = Pipeline([('BOW', bow),('LDA', model)])
+
 topic_model = TopicModel(pipeline)
-text_corpus = topic_model._extractNewsContent(url)
-
-if len(text_corpus) !=0:
-    prediction = topic_model.predict(url,'Ner_Model2')
-
-    st.subheader('Event Type')
-    st.write(prediction.Topic.values)
-
-    st.subheader('Event Location')
-    st.write(prediction.Location.values)
-
-    st.subheader('Event Date')
-    st.write(prediction.Date.values)
-
-else:
-    st.write('There is no Url or the Url link is Invalid')
 
 
-st.write("News Text")
+
+prediction = topic_model.predict(input_df.Url.loc[0],'Ner_Model')
+
+st.subheader('Event Type')
+st.write(prediction.Topic.values)
+
+st.subheader('Event Location')
+st.write(prediction.Location.values)
+
+st.subheader('Event Date')
+st.write(prediction.Date.values)
+
+st.subheader('Event Prediction Table')
+st.write(prediction)
+
+st.subheader('Event News Text')
+text_corpus = topic_model._extractNewsContent(input_df.Url.iloc[0])
 st.write(text_corpus)
 
-# Summarize
-# @st.cache(suppress_st_warning=True)
-# def load_model(model_type):
-#     checkpoint = torch.load(f'checkpoints/{model_type}.pt', map_location='cpu')
-#     model = ExtSummarizer(device="cpu", checkpoint=checkpoint, bert_type=model_type)
-#     return model
-
-# model = load_model('mobilebert')
-
-# sum_level = st.radio("Output Length: ", ["Short", "Medium"])
-# max_length = 3 if sum_level == "Short" else 5
-# result_fp = 'results/summary.txt'
-# summary = summarize(text_corpus, result_fp, model, max_length=max_length)
-# st.markdown("<h3 style='text-align: center;'>Summary</h3>", unsafe_allow_html=True)
-# st.markdown(f"<p align='justify'>{summary}</p>", unsafe_allow_html=True)
-        
