@@ -6,8 +6,8 @@ import pickle
 from security_AI import TopicModel
 from sklearn.pipeline import Pipeline
 import mlflow
-from models.model_builder import ExtSummarizer
-from ext_sum import summarize
+#from models.model_builder import ExtSummarizer
+#from ext_sum import summarize
 #import torch
 
 
