@@ -1,5 +1,5 @@
 
-cpu/torch-1.10.1%2Bcpu-cp36-cp36m-win_amd64.whl
+-f cpu/torch-1.10.1%2Bcpu-cp36-cp36m-win_amd64.whl
 scikit-learn == 0.24.1
 numpy == 1.20.1
 streamlit == 1.2.0
