@@ -1,4 +1,4 @@
-http://download.pytorch.org/whl/cpu/torch-1.10.1-cp36-cp36m-linux_x86_64.whl
+-f http://download.pytorch.org/whl/cpu/torch-1.10.1%2Bcpu-cp36-cp36m-win_amd64.whl
 scikit-learn == 0.24.1
 numpy == 1.20.1
 streamlit == 1.2.0
