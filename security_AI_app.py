@@ -1,6 +1,5 @@
 
 import streamlit as st
-import pandas as pd
 import numpy as np
 import pickle
 from security_AI import TopicModel
@@ -39,16 +38,16 @@ topic_model = TopicModel(pipeline)
 text_corpus = topic_model._extractNewsContent(url)
 
 if len(text_corpus) !=0:
-    prediction = topic_model.predict(url,'Ner_Model2')
+    news,topic,location,date = topic_model.predict(url,'Ner_Model2')
 
     st.subheader('Event Type')
-    st.write(prediction.Topic.values)
+    st.write(topic)
 
     st.subheader('Event Location')
-    st.write(prediction.Location.values)
+    st.write(location)
 
     st.subheader('Event Date')
-    st.write(prediction.Date.values)
+    st.write(date)
 
 else:
     st.write('There is no Url or the Url link is Invalid')
