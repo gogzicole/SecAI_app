@@ -1,7 +1,0 @@
-temp/
-.ipynb_checkpoints
-__pycache__
-.vscode
-
-*.pt
-test_models.ipynb
