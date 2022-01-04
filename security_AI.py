@@ -10,7 +10,6 @@ class TopicModel():
            and returns text corpus
         '''
         from newspaper import Article
-        import pandas as pd
         try:
             article = Article(url)
             article.download()
@@ -48,7 +47,7 @@ class TopicModel():
     def _special_lemmatizer(self, text):
         import spacy
         allowed_postags=['ADJ','VERB','NOUN','ADV']
-        nlp = spacy.load('spacy_model')
+        nlp = spacy.load('en_core_web_sm')
         token = [word for word in nlp(text) if word.pos_ in allowed_postags]
         token1 = [word.lemma_ for word in token]
         token2 = [word for word in token1]
@@ -56,7 +55,6 @@ class TopicModel():
 
     def _ner_model(self,url,ner):
         import spacy
-        import pandas as pd
         ner_news = self._extractNewsContent(url)
         model = spacy.load(ner)
         text = model(ner_news)
@@ -69,15 +67,14 @@ class TopicModel():
                 location.add(str(ent))
         loca = [str(i) for i in location]
         date_ = [str(i) for i in date]
-        join_loca = [' '.join(loca)]
-        join_date = [' '.join(date_)]
-        df = pd.DataFrame({'Location':join_loca, 'Date':join_date})
+        join_loca = ' '.join(set(loca))
+        join_date = ' '.join(set(date_))
         
-        return df
+        return join_loca, join_date
+
 
 
     def predict(self,url,ner):
-        import pandas as pd
         import numpy as np
 
         #url = df.Url.iloc[0]
@@ -87,8 +84,6 @@ class TopicModel():
         topic_names =['Terrorism/Banditry','Protest','Violence','Terrorism/Banditry','Battle','Assault']
         distribution = self.model.transform(lemma)
         topics = [topic_names[np.argmax(topics)] for topics in distribution]
-        #topic_proba = [np.max(proba) for proba in distribution]
-        ner_output = self._ner_model(url,ner)
-        lda_output = pd.DataFrame(zip(news,topics),columns = ['News','Topic'])
-        result = pd.concat([lda_output,ner_output], axis=1)
-        return result
+        topic = " ".join(topics)
+        ner_loca, ner_date = self._ner_model(url,ner)
+        return news, topic, ner_loca, ner_date
