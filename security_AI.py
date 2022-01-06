@@ -81,7 +81,7 @@ class TopicModel():
         news = [self._extractNewsContent(url)]
         cleaned = self._clean_data(''.join(news))
         lemma = [self._special_lemmatizer(cleaned)]
-        topic_names =['Terrorism/Banditry','Protest','Violence','Terrorism/Banditry','Battle','Assault']
+        topic_names = ['Abduction','Attack','Kidnappings','Banditry','Protest']
         distribution = self.model.transform(lemma)
         topics = [topic_names[np.argmax(topics)] for topics in distribution]
         topic = " ".join(topics)
