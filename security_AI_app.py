@@ -27,8 +27,8 @@ try:
 except Exception:
     st.write('No Url Uploaded')
 
-bow = pickle.load(open('BOW.sav','rb'))
-model = mlflow.sklearn.load_model('LDA_model')
+bow = pickle.load(open('BOW_main.sav','rb'))
+model = mlflow.sklearn.load_model('main_LDA_model')
 pipeline = Pipeline([('BOW', bow),('LDA', model)])
 topic_model = TopicModel(pipeline)
 text_corpus = topic_model._extractNewsContent(url)
